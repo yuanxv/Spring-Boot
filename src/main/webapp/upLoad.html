@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>断点上传</title>
+	</head>
+
+	<body>
+		<!-- 上传的表单 -->
+		<form method="post" id="myForm" action="" enctype="multipart/form-data">
+			<input type="file" id="input" multiple>
+			<!-- 上传的文件列表 -->
+			<table id="upload-list">
+				<thead>
+					<tr>
+						<th width="35%">文件名</th>
+						<th width="15%">文件类型</th>
+						<th width="15%">文件大小</th>
+						<th width="20%">上传进度</th>
+						<th width="15%">
+							<input type="button" id="upload-all-btn" value="全部上传">
+						</th>
+					</tr>
+				</thead>
+				<tbody id="tBody">
+				</tbody>
+			</table>
+			<!-- 上传文件列表中每个文件的信息模版 -->
+			<script type="text/template" id="file-upload-tpl">
+				<tr>
+					<td>{{fileName}}</td>
+					<td>{{fileType}}</td>
+					<td>{{fileSize}}</td>
+					<td class="upload-progress">{{progress}}</td>
+					<td>
+						<input type="button" class="upload-item-btn" data-name="{{fileName}}" data-size="{{totalSize}}" data-state="default" value="{{uploadVal}}">
+					</td>
+				</tr>
+			</script>
+		</form>
+	</body>
+	<script type="text/javascript">
+		window.addEventListener("resize", function() {
+			console.log("window resize");
+		}, false);
+		document.getElementById("input").addEventListener("focus", function() {
+			console.log("focus");
+		});
+
+		document.getElementById("input").addEventListener("mousedown", function() {
+			console.log("mousedown");
+		});
+
+		document.getElementById("input").addEventListener("mouseup", function() {
+			console.log("mouseup");
+		});
+
+		document.getElementById("input").addEventListener("input", function() {
+			console.log("input");
+		});
+
+		document.getElementById("input").addEventListener("change", function(val) {
+			console.log("change");
+			var files = this.files;
+
+			var uploadItemTpl = document.getElementById('file-upload-tpl').innerHTML;
+			var uploadItems = '';
+			for(var i=0;i<files.length;i++) {
+				var file = files[i];
+				// 更新文件信息列表
+				var uploadItem = uploadItemTpl
+					.replace(/{{fileName}}/g, file.name)
+					.replace('{{fileType}}', file.type || file.name.match(/\.\w+$/) + '文件')
+					.replace('{{fileSize}}', file.size)
+					.replace('{{progress}}', 'progress')
+					.replace('{{totalSize}}', file.size)
+					.replace('{{uploadVal}}', 'uploadVal');
+				uploadItems += uploadItem;
+			}
+
+			document.getElementById("tBody").innerHTML = uploadItems;
+
+		});
+
+		document.getElementById("input").addEventListener("blur", function() {
+			console.log("blur");
+		});
+
+		document.getElementById("input").addEventListener("click", function() {
+			console.log("click");
+		});
+	</script>
+
+</html>
